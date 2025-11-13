@@ -6,40 +6,12 @@ interface HistoricalTrendsChartProps {
   data: HistoricalTrend[];
 }
 
-// --- SVG Path Smoothing Helpers ---
-const line = (pointA: {x:number, y:number}, pointB: {x:number, y:number}) => {
-  const lengthX = pointB.x - pointA.x;
-  const lengthY = pointB.y - pointA.y;
-  return {
-    length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
-    angle: Math.atan2(lengthY, lengthX)
-  };
+// --- SVG Path Linear Helper ---
+const createLinearPath = (points: {x:number, y:number}[]) => {
+    if (points.length === 0) return '';
+    return "M" + points.map(p => `${p.x},${p.y}`).join(" L ");
 };
-
-const controlPoint = (current: {x:number, y:number}, previous: {x:number, y:number}, next: {x:number, y:number}, reverse?: boolean) => {
-  const p = previous || current;
-  const n = next || current;
-  const smoothing = 0.2;
-  const o = line(p, n);
-  const angle = o.angle + (reverse ? Math.PI : 0);
-  const length = o.length * smoothing;
-  const x = current.x + Math.cos(angle) * length;
-  const y = current.y + Math.sin(angle) * length;
-  return [x, y];
-};
-
-const createSmoothPath = (points: {x:number, y:number}[]) => {
-    if (points.length < 2) return '';
-    return points.reduce((acc, point, i, a) => {
-      if (i === 0) {
-        return `M ${point.x},${point.y}`;
-      }
-      const [cpsX, cpsY] = controlPoint(a[i - 1], a[i - 2], point);
-      const [cpeX, cpeY] = controlPoint(point, a[i - 1], a[i + 1], true);
-      return `${acc} C ${cpsX},${cpsY} ${cpeX},${cpeY} ${point.x},${point.y}`;
-    }, '');
-};
-// --- End of SVG Path Smoothing Helpers ---
+// --- End of SVG Path Helper ---
 
 
 const HistoricalTrendsChart: React.FC<HistoricalTrendsChartProps> = ({ data }) => {
@@ -47,7 +19,7 @@ const HistoricalTrendsChart: React.FC<HistoricalTrendsChartProps> = ({ data }) =
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   
-  const colors = ['#3B82F6', '#F59E0B', '#10B981']; // Blue, Orange, Green to match tooltip
+  const colors = ['#d356f8', '#F59E0B', '#10B981']; // Pink, Orange, Green to match tooltip
   
   const { maxValue, labels, seriesPoints } = useMemo(() => {
     const allValues = data.flatMap(d => d.data.map(p => p.value));
@@ -84,26 +56,26 @@ const HistoricalTrendsChart: React.FC<HistoricalTrendsChartProps> = ({ data }) =
   };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-xl shadow-lg h-full flex flex-col">
-      <h2 className="text-xl font-bold text-white">Historical Trends</h2>
-      <p className="text-gray-400 mt-1 mb-4 text-sm">Lead progression over the last 6 months.</p>
+    <div className="bg-gray-900 p-6 rounded-xl shadow-lg h-full flex flex-col">
+      <h2 className="text-2xl font-bold text-white">Historical Trends</h2>
+      <p className="text-gray-400 mt-1 mb-4 text-base">Lead progression over the last 6 months.</p>
       <div className="flex-grow flex flex-col justify-between">
         <div 
           ref={containerRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative h-full w-full pl-8 pr-4"
+          className="relative w-full aspect-[10/4] max-h-80 pl-8 pr-4"
         >
             {/* Tooltip */}
             {hoveredIndex !== null && tooltipPosition && (
               <div 
-                className="absolute z-10 p-3 bg-gray-900 shadow-lg rounded-md pointer-events-none transform -translate-x-1/2 -translate-y-full"
+                className="absolute z-10 p-3 bg-black shadow-lg rounded-md pointer-events-none transform -translate-x-1/2 -translate-y-full"
                 style={{ left: tooltipPosition.x, top: tooltipPosition.y - 10, minWidth: '160px' }}
               >
-                  <p className="font-bold text-white mb-2 text-sm">{labels[hoveredIndex]}</p>
+                  <p className="font-bold text-white mb-2 text-base">{labels[hoveredIndex]}</p>
                   <ul className="space-y-1">
                       {data.map((trend, trendIndex) => (
-                          <li key={trend.name} className="flex items-center justify-between text-xs">
+                          <li key={trend.name} className="flex items-center justify-between text-sm">
                               <div className="flex items-center">
                                   <span className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: colors[trendIndex % colors.length] }}></span>
                                   <span className="text-gray-300">{trend.name}:</span>
@@ -121,7 +93,7 @@ const HistoricalTrendsChart: React.FC<HistoricalTrendsChartProps> = ({ data }) =
                 return (
                     <div key={i} className="absolute w-full" style={{ top: `${(i / 4) * 100}%`, left: 0}}>
                         <div className="w-full border-t border-gray-700 border-dashed"></div>
-                        <span className="absolute -left-8 text-xs text-gray-400 -translate-y-1/2">{value.toFixed(0)}</span>
+                        <span className="absolute -left-8 text-sm text-gray-400 -translate-y-1/2">{value.toFixed(0)}</span>
                     </div>
                 )
             })}
@@ -130,7 +102,7 @@ const HistoricalTrendsChart: React.FC<HistoricalTrendsChartProps> = ({ data }) =
                 {seriesPoints.map((points, trendIndex) => (
                     <path
                         key={data[trendIndex].name}
-                        d={createSmoothPath(points)}
+                        d={createLinearPath(points)}
                         fill="none"
                         stroke={colors[trendIndex % colors.length]}
                         strokeWidth="2.5"
@@ -155,7 +127,7 @@ const HistoricalTrendsChart: React.FC<HistoricalTrendsChartProps> = ({ data }) =
                                 cy={points[hoveredIndex].y}
                                 r="4"
                                 fill={colors[trendIndex % colors.length]}
-                                stroke="#1F2937" 
+                                stroke="#111827" 
                                 strokeWidth="2"
                             />
                         ))}
@@ -165,14 +137,14 @@ const HistoricalTrendsChart: React.FC<HistoricalTrendsChartProps> = ({ data }) =
         </div>
         <div className="flex justify-between mt-2 pl-8 pr-4">
             {labels.map(label => (
-                <span key={label} className="text-xs text-gray-500">{label.split(' ')[0]}</span>
+                <span key={label} className="text-sm text-gray-500">{label.split(' ')[0]}</span>
             ))}
         </div>
         <div className="flex justify-center space-x-4 mt-4">
           {data.map((trend, index) => (
             <div key={trend.name} className="flex items-center">
               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: colors[index % colors.length] }}></span>
-              <span className="ml-2 text-sm text-gray-300">{trend.name}</span>
+              <span className="ml-2 text-base text-gray-300">{trend.name}</span>
             </div>
           ))}
         </div>

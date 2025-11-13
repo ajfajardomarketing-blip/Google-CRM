@@ -41,10 +41,11 @@ export enum LeadStage {
   Opportunity = 'Opportunity',
   Conversion = 'Conversion',
   Discarded = 'Discarded',
+  Eliminar = 'Eliminar',
 }
 
 export interface Lead {
-  id: number;
+  id: string; // Changed to string for Firestore compatibility
   name: string;
   email: string;
   company: string;
@@ -53,26 +54,29 @@ export interface Lead {
   campaignGroup: string;
   dateAdded: string;
   stage: LeadStage;
+  stageDates?: Partial<Record<LeadStage, string>>;
   dealValue?: number;
 }
 
 export interface CampaignGroup {
-  id: number;
+  id: string; // Changed to string for Firestore compatibility
   name: string;
   channel: string;
+  order: number;
 }
 
 export interface Campaign {
-  id: number;
+  id: string; // Changed to string for Firestore compatibility
   name: string;
-  campaignGroupId: number;
+  campaignGroupId: string; // Changed to string for Firestore compatibility
   status: 'Active' | 'Completed' | 'Paused';
   startDate: string;
-  endDate: string;
+  endDate?: string;
   leads: number;
   cost: number;
   // Email Marketing specific metrics
   sent?: number;
+  delivered?: number;
   opens?: number;
   clicks?: number;
   revenue?: number;
@@ -87,6 +91,9 @@ export interface Campaign {
   engagement?: number;
   followerGrowth?: number;
   websiteClicks?: number;
+  // Events specific metrics
+  registered?: number;
+  attendees?: number;
 }
 
 export interface FunnelStage {

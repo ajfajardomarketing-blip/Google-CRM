@@ -1,4 +1,5 @@
 
+
 import { PlatformMetrics, Integration, IntegrationStatus, Lead, Campaign, CampaignGroup, HistoricalTrend, LeadStage, GoalSettings } from '../types';
 
 export const weeklyHeaders = [
@@ -98,93 +99,71 @@ export const integrationsData: Integration[] = [
     { name: 'Facebook', category: 'Social Media', logo: 'https://cdn.worldvectorlogo.com/logos/facebook-3-1.svg', status: IntegrationStatus.Connected },
 ];
 
+// FIX: Changed numeric ids to strings to match the 'Lead' type.
 export const leadsData: Lead[] = [
-    { id: 1, name: 'John Doe', email: 'john.doe@example.com', company: 'Acme Corp', channel: 'LinkedIn', campaign: 'Q3 Product Launch', campaignGroup: 'Product Marketing', dateAdded: '2023-08-15', stage: LeadStage.Opportunity, dealValue: 5000 },
-    { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', company: 'Innovate LLC', channel: 'Facebook', campaign: 'Summer Sale', campaignGroup: 'Growth', dateAdded: '2023-08-18', stage: LeadStage.Conversion, dealValue: 12500 },
-    { id: 3, name: 'Peter Jones', email: 'peter.jones@example.com', company: 'Tech Solutions', channel: 'Website', campaign: 'Free Trial Offer', campaignGroup: 'Product Marketing', dateAdded: '2023-08-21', stage: LeadStage.Lead },
-    { id: 4, name: 'Mary Johnson', email: 'mary.j@example.com', company: 'Data Systems', channel: 'LinkedIn', campaign: 'Q3 Product Launch', campaignGroup: 'Product Marketing', dateAdded: '2023-08-22', stage: LeadStage.Discarded },
+    { id: '1', name: 'John Doe', email: 'john.doe@example.com', company: 'Acme Corp', channel: 'LinkedIn', campaign: 'Q3 Product Launch', campaignGroup: 'Product Marketing', dateAdded: '2023-08-15', stage: LeadStage.Opportunity, dealValue: 5000 },
+    { id: '2', name: 'Jane Smith', email: 'jane.smith@example.com', company: 'Innovate LLC', channel: 'Facebook', campaign: 'Summer Sale', campaignGroup: 'Growth', dateAdded: '2023-08-18', stage: LeadStage.Conversion, dealValue: 12500 },
+    { id: '3', name: 'Peter Jones', email: 'peter.jones@example.com', company: 'Tech Solutions', channel: 'Website', campaign: 'Free Trial Offer', campaignGroup: 'Product Marketing', dateAdded: '2023-08-21', stage: LeadStage.Lead },
+    { id: '4', name: 'Mary Johnson', email: 'mary.j@example.com', company: 'Data Systems', channel: 'LinkedIn', campaign: 'Q3 Product Launch', campaignGroup: 'Product Marketing', dateAdded: '2023-08-22', stage: LeadStage.Discarded },
 ];
 
-export const channels = ['Email Marketing', 'Social Media', 'Content Marketing', 'Website', 'Ads', 'Organic Social'];
+export const channels = ['Email Marketing', 'Social Media', 'Content Marketing', 'Website', 'Meta Ads', 'Google Ads', 'LinkedIn Ads', 'Organic Social', 'Eventos'];
 
+// FIX: Changed numeric ids to strings to match the 'CampaignGroup' type.
 export const campaignGroupsData: CampaignGroup[] = [
-    { id: 1, name: 'Product Marketing', channel: 'Website' },
-    { id: 2, name: 'Growth', channel: 'Social Media' },
-    { id: 3, name: 'Content Marketing', channel: 'Content Marketing' },
-    { id: 4, name: 'Seguridad Electrónica - Industrias', channel: 'Email Marketing' },
-    { id: 5, name: 'Google Ads Q3', channel: 'Ads' },
-    { id: 6, name: 'Instagram Content', channel: 'Organic Social' },
+    { id: '1', name: 'Product Marketing', channel: 'Website', order: 0 },
+    { id: '2', name: 'Growth', channel: 'Social Media', order: 1 },
+    { id: '3', name: 'Content Marketing', channel: 'Content Marketing', order: 2 },
+    { id: '4', name: 'Seguridad Electrónica - Industrias', channel: 'Email Marketing', order: 3 },
+    { id: '5', name: 'Google Ads Q3', channel: 'Google Ads', order: 4 },
+    { id: '6', name: 'Instagram Content', channel: 'Organic Social', order: 5 },
+    { id: '7', name: 'Webinars 2023', channel: 'Eventos', order: 6 },
 ];
 
+// FIX: Changed numeric ids and campaignGroupIds to strings to match the 'Campaign' type.
 export const campaignsData: Campaign[] = [
-    { id: 1, name: 'Q3 Product Launch', campaignGroupId: 1, status: 'Active', startDate: '2023-07-01', endDate: '2023-09-30', leads: 28, cost: 5000 },
-    { id: 2, name: 'Summer Sale', campaignGroupId: 2, status: 'Completed', startDate: '2023-06-15', endDate: '2023-07-31', leads: 152, cost: 8500 },
-    { id: 3, name: 'Free Trial Offer', campaignGroupId: 1, status: 'Active', startDate: '2023-08-01', endDate: '2023-10-31', leads: 98, cost: 3200 },
-    { id: 4, name: 'Webinar Series', campaignGroupId: 3, status: 'Paused', startDate: '2023-09-01', endDate: '2023-09-30', leads: 45, cost: 1500 },
-    { id: 5, name: 'Seguridad Electrónica - Industrias - Lectura de Placas', campaignGroupId: 4, status: 'Active', startDate: '2023-08-10', endDate: '2023-09-10', leads: 12, cost: 2000, sent: 5000, opens: 1500, clicks: 300, revenue: 7500 },
-    { id: 6, name: 'Seguridad Electrónica - Industrias - Reconocimiento facial', campaignGroupId: 4, status: 'Active', startDate: '2023-08-15', endDate: '2023-09-15', leads: 18, cost: 2500, sent: 6200, opens: 1800, clicks: 450, revenue: 11200 },
-    { id: 7, name: 'Google Search - "Security Solutions"', campaignGroupId: 5, status: 'Active', startDate: '2023-08-01', endDate: '2023-10-31', leads: 42, cost: 6800, impressions: 150000, clicks: 750, cpc: 9.06, conversions: 42, cpa: 161.90, roas: 3.5 },
-    { id: 8, name: 'Instagram Stories - Product Demo', campaignGroupId: 6, status: 'Completed', startDate: '2023-08-20', endDate: '2023-08-27', leads: 5, cost: 0, reach: 12000, engagement: 850, followerGrowth: 150, websiteClicks: 35 },
+    { id: '1', name: 'Q3 Product Launch', campaignGroupId: '1', status: 'Active', startDate: '2023-07-01', endDate: '2023-09-30', leads: 28, cost: 5000 },
+    { id: '2', name: 'Summer Sale', campaignGroupId: '2', status: 'Completed', startDate: '2023-06-15', endDate: '2023-07-31', leads: 152, cost: 8500 },
+    { id: '3', name: 'Free Trial Offer', campaignGroupId: '1', status: 'Active', startDate: '2023-08-01', endDate: '2023-10-31', leads: 98, cost: 3200 },
+    { id: '4', name: 'Webinar Series', campaignGroupId: '3', status: 'Paused', startDate: '2023-09-01', endDate: '2023-09-30', leads: 45, cost: 1500 },
+    { id: '5', name: 'Seguridad Electrónica - Industrias - Lectura de Placas', campaignGroupId: '4', status: 'Active', startDate: '2023-08-10', endDate: '2023-09-10', leads: 12, cost: 2000, sent: 5000, delivered: 4950, opens: 1500, clicks: 300, revenue: 7500 },
+    { id: '6', name: 'Seguridad Electrónica - Industrias - Reconocimiento facial', campaignGroupId: '4', status: 'Active', startDate: '2023-08-15', endDate: '2023-09-15', leads: 18, cost: 2500, sent: 6200, delivered: 6100, opens: 1800, clicks: 450, revenue: 11200 },
+    { id: '7', name: 'Google Search - "Security Solutions"', campaignGroupId: '5', status: 'Active', startDate: '2023-08-01', endDate: '2023-10-31', leads: 42, cost: 6800, impressions: 150000, clicks: 750, cpc: 9.06, conversions: 42, cpa: 161.90, roas: 3.5 },
+    { id: '8', name: 'Instagram Stories - Product Demo', campaignGroupId: '6', status: 'Completed', startDate: '2023-08-20', endDate: '2023-08-27', leads: 5, cost: 0, reach: 12000, engagement: 850, followerGrowth: 150, websiteClicks: 35 },
+    { id: '9', name: 'Marketing OS Launch Webinar', campaignGroupId: '7', status: 'Completed', startDate: '2023-08-30', endDate: '2023-08-30', leads: 75, cost: 500, registered: 250, attendees: 180 },
 ];
 
-export const historicalTrendsData: HistoricalTrend[] = [
-  {
-    name: 'Leads Entered',
-    data: [
-      { month: 'Apr 2025', value: 1 },
-      { month: 'May 2025', value: 1 },
-      { month: 'Jun 2025', value: 1 },
-      { month: 'Jul 2025', value: 1 },
-      { month: 'Oct 2025', value: 4 },
-      { month: 'Nov 2025', value: 0 },
-    ],
-  },
-  {
-    name: 'Opportunities',
-    data: [
-      { month: 'Apr 2025', value: 0 },
-      { month: 'May 2025', value: 0 },
-      { month: 'Jun 2025', value: 0 },
-      { month: 'Jul 2025', value: 0.2 },
-      { month: 'Oct 2025', value: 1 },
-      { month: 'Nov 2025', value: 1 },
-    ],
-  },
-  {
-    name: 'Conversions',
-    data: [
-      { month: 'Apr 2025', value: 0 },
-      { month: 'May 2025', value: 0 },
-      { month: 'Jun 2025', value: 0 },
-      { month: 'Jul 2025', value: 0.1 },
-      { month: 'Oct 2025', value: 1 },
-      { month: 'Nov 2025', value: 0.5 },
-    ],
-  },
+const adsKpis = [
+    { id: 'impressions' as const, label: 'Impressions' },
+    { id: 'clicks' as const, label: 'Clicks' },
+    { id: 'cost' as const, label: 'Spend' },
+    { id: 'cpc' as const, label: 'CPC' },
+    { id: 'conversions' as const, label: 'Conversions' },
+    { id: 'cpa' as const, label: 'CPA' },
+    { id: 'roas' as const, label: 'ROAS' },
+    { id: 'revenue' as const, label: 'Revenue' },
 ];
 
 export const campaignKpiOptions: { [key: string]: { id: keyof Campaign, label: string }[] } = {
   'Email Marketing': [
     { id: 'sent', label: 'Sent' },
+    { id: 'delivered', label: 'Delivered' },
     { id: 'opens', label: 'Opens' },
     { id: 'clicks', label: 'Clicks' },
-    { id: 'leads', label: 'Leads' },
     { id: 'revenue', label: 'Revenue' },
   ],
-  'Ads': [
-    { id: 'impressions', label: 'Impressions' },
-    { id: 'clicks', label: 'Clicks' },
-    { id: 'cost', label: 'Spend' },
-    { id: 'cpc', label: 'CPC' },
-    { id: 'conversions', label: 'Conversions' },
-    { id: 'cpa', label: 'CPA' },
-    { id: 'roas', label: 'ROAS' },
-  ],
+  'Meta Ads': adsKpis,
+  'Google Ads': adsKpis,
+  'LinkedIn Ads': adsKpis,
   'Organic Social': [
       { id: 'reach', label: 'Reach' },
       { id: 'engagement', label: 'Engagement' },
       { id: 'followerGrowth', label: 'Follower Growth' },
       { id: 'websiteClicks', label: 'Website Clicks' },
+  ],
+  'Eventos': [
+    { id: 'registered', label: 'Registered' },
+    { id: 'attendees', label: 'Attendees' },
   ]
 };
 

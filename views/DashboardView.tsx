@@ -1,7 +1,8 @@
 
+
 import React, { useMemo, useState } from 'react';
-import { Lead, LeadStage, FunnelStage, IntegrationStatus, Campaign, GoalSettings } from '../types';
-import { metricsData, weeklyHeaders, historicalTrendsData, integrationsData } from '../data/mockData';
+import { Lead, LeadStage, FunnelStage, IntegrationStatus, Campaign, GoalSettings, HistoricalTrend } from '../types';
+import { metricsData, weeklyHeaders, integrationsData } from '../data/mockData';
 import KpiCard from '../components/KpiCard';
 import MetricsTable from '../components/MetricsTable';
 import FunnelOverview from '../components/FunnelOverview';
@@ -32,6 +33,55 @@ const DashboardView: React.FC<DashboardViewProps> = ({ leads, campaigns, goals }
             platform.name === 'All Channels' || connectedChannels.includes(platform.name)
         );
     }, []);
+
+    const historicalTrends = useMemo<HistoricalTrend[]>(() => {
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const today = new Date();
+        const last6Months: string[] = [];
+
+        for (let i = 5; i >= 0; i--) {
+            const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+            last6Months.push(`${monthNames[d.getMonth()]} ${d.getFullYear()}`);
+        }
+
+        const monthlyData: { [key: string]: { leads: number; opportunities: number; conversions: number } } = {};
+        last6Months.forEach(m => {
+            monthlyData[m] = { leads: 0, opportunities: 0, conversions: 0 };
+        });
+
+        leads.forEach(lead => {
+            const leadDate = new Date(lead.dateAdded);
+            // FIX: Ensure leadDate is valid before getting month and year
+            if (!isNaN(leadDate.getTime())) {
+                const monthKey = `${monthNames[leadDate.getMonth()]} ${leadDate.getFullYear()}`;
+
+                if (monthlyData[monthKey]) {
+                    monthlyData[monthKey].leads++;
+                    if (lead.stage === LeadStage.Opportunity || lead.stage === LeadStage.Conversion) {
+                        monthlyData[monthKey].opportunities++;
+                    }
+                    if (lead.stage === LeadStage.Conversion) {
+                        monthlyData[monthKey].conversions++;
+                    }
+                }
+            }
+        });
+
+        return [
+          {
+            name: 'Leads Entered',
+            data: last6Months.map(month => ({ month, value: monthlyData[month].leads })),
+          },
+          {
+            name: 'Opportunities',
+            data: last6Months.map(month => ({ month, value: monthlyData[month].opportunities })),
+          },
+          {
+            name: 'Conversions',
+            data: last6Months.map(month => ({ month, value: monthlyData[month].conversions })),
+          },
+        ];
+    }, [leads]);
 
     const aggregatedData = useMemo(() => {
         // --- KPI Cards Data ---
@@ -92,14 +142,16 @@ const DashboardView: React.FC<DashboardViewProps> = ({ leads, campaigns, goals }
     const leadsForPanel = useMemo(() => {
         if (!selectedStage) return [];
         
+        // Based on user feedback, the panel should show leads *currently* in the selected stage,
+        // not all leads that have passed through it.
         switch(selectedStage) {
-            case 'Lead':
-                return leads;
-            case 'Opportunity':
-                return leads.filter(l => l.stage === LeadStage.Opportunity || l.stage === LeadStage.Conversion);
-            case 'Conversion':
+            case LeadStage.Lead:
+                return leads.filter(l => l.stage === LeadStage.Lead);
+            case LeadStage.Opportunity:
+                return leads.filter(l => l.stage === LeadStage.Opportunity);
+            case LeadStage.Conversion:
                 return leads.filter(l => l.stage === LeadStage.Conversion);
-            case 'Discarded':
+            case LeadStage.Discarded:
                 return leads.filter(l => l.stage === LeadStage.Discarded);
             default:
                 return [];
@@ -111,8 +163,8 @@ const DashboardView: React.FC<DashboardViewProps> = ({ leads, campaigns, goals }
     <>
     <div className="space-y-8">
         <div>
-            <h1 className="text-3xl font-bold text-white">Marketing Performance Dashboard</h1>
-            <p className="text-gray-400 mt-1">A 360° view of your marketing efforts.</p>
+            <h1 className="text-4xl font-bold text-white">Marketing Performance Dashboard</h1>
+            <p className="text-lg text-gray-400 mt-1">A 360° view of your marketing efforts.</p>
         </div>
 
         {/* KPI Cards */}
@@ -130,7 +182,7 @@ const DashboardView: React.FC<DashboardViewProps> = ({ leads, campaigns, goals }
             <FunnelOverview funnelData={aggregatedData.funnelStages} onStageClick={handleStageClick} />
           </div>
           <div className="lg:col-span-2">
-            <HistoricalTrendsChart data={historicalTrendsData} />
+            <HistoricalTrendsChart data={historicalTrends} />
           </div>
         </div>
 
