@@ -1,15 +1,21 @@
 
-
 import { PlatformMetrics, Integration, IntegrationStatus, Lead, Campaign, CampaignGroup, HistoricalTrend, LeadStage, GoalSettings } from '../types';
 
-export const weeklyHeaders = [
-  'Aug 1 - 7',
-  'Aug 8 - 14',
-  'Aug 15 - 21',
-  'Aug 22 - 28',
-  'Aug 29 - 31',
-  'August Actuals',
+export const monthlyHeaders = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
 ];
+
 
 export const metricsData: PlatformMetrics[] = [
   {
@@ -17,13 +23,27 @@ export const metricsData: PlatformMetrics[] = [
     metrics: [
       {
         name: 'Blended Social Audience',
+        sourceType: 'API',
         data: {
-          'Aug 1 - 7': '8,633',
-          'Aug 8 - 14': '8,724',
-          'Aug 15 - 21': '8,919',
-          'Aug 22 - 28': '',
-          'Aug 29 - 31': '',
-          'August Actuals': '9,138',
+          'Jan': '-', 'Feb': '-', 'Mar': '7,512', 'Apr': '7,845', 'May': '8,103', 'Jun': '8,350', 'Jul': '8,633', 'Aug': '9,138', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-',
+        },
+        isHighlighted: true,
+        isTrendingUp: true,
+      },
+      {
+        name: 'Blended Subscriber Growth',
+        sourceType: 'API',
+        data: {
+          'Jan': '-', 'Feb': '-', 'Mar': '-', 'Apr': '-', 'May': '-', 'Jun': '-', 'Jul': '-', 'Aug': '-', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-',
+        },
+        isHighlighted: true,
+        isTrendingUp: true,
+      },
+      {
+        name: 'Blended Awareness',
+        sourceType: 'API',
+        data: {
+          'Jan': '-', 'Feb': '-', 'Mar': '-', 'Apr': '-', 'May': '-', 'Jun': '-', 'Jul': '-', 'Aug': '-', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-',
         },
         isHighlighted: true,
         isTrendingUp: true,
@@ -33,51 +53,60 @@ export const metricsData: PlatformMetrics[] = [
   {
     name: 'LinkedIn',
     metrics: [
-      { name: 'LN - Subscribers', data: { 'Aug 1 - 7': 462, 'Aug 8 - 14': 470, 'Aug 15 - 21': 480, 'Aug 22 - 28': 500, 'Aug 29 - 31': 510, 'August Actuals': 510 }, isStarred: true, isTrendingUp: true },
-      { name: 'LN - Subscriber Growth', data: { 'Aug 1 - 7': 2, 'Aug 8 - 14': 8, 'Aug 15 - 21': 10, 'Aug 22 - 28': 10, 'Aug 29 - 31': 10, 'August Actuals': 50 }, isTrendingUp: true },
-      { name: 'LN - Articles Posted', data: { 'Aug 1 - 7': 0, 'Aug 8 - 14': 0, 'Aug 15 - 21': 2, 'Aug 22 - 28': 13, 'Aug 29 - 31': 13, 'August Actuals': 28 }, isTrendingUp: true },
-      { name: 'LN - Post Reach', data: { 'Aug 1 - 7': 0, 'Aug 8 - 14': 11, 'Aug 15 - 21': 8.76, 'Aug 22 - 28': 33.22, 'Aug 29 - 31': 19.58, 'August Actuals': 68.94 }, isTrendingUp: true },
+      { name: 'LN - Subscribers', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': 405, 'Apr': 420, 'May': 435, 'Jun': 450, 'Jul': 462, 'Aug': 510, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isStarred: true, isTrendingUp: true },
+      { name: 'LN - Subscriber Growth', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': 12, 'Apr': 15, 'May': 15, 'Jun': 15, 'Jul': 12, 'Aug': 50, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'LN - Posts', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': 4, 'Apr': 5, 'May': 6, 'Jun': 8, 'Jul': 5, 'Aug': 28, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'LN - Post Reach', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': 45100, 'Apr': 55200, 'May': 60500, 'Jun': 62100, 'Jul': 65800, 'Aug': 68940, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
     ],
   },
   {
     name: 'Facebook',
     metrics: [
-      { name: 'FB - Total Followers', data: { 'Aug 1 - 7': '2,860', 'Aug 8 - 14': '2,957', 'Aug 15 - 21': '3,082', 'Aug 22 - 28': '3,106', 'Aug 29 - 31': '3,171', 'August Actuals': '3,177' }, isTrendingUp: true },
-      { name: 'FB - Follower Growth', data: { 'Aug 1 - 7': -1, 'Aug 8 - 14': 77, 'Aug 15 - 21': 145, 'Aug 22 - 28': 24, 'Aug 29 - 31': 65, 'August Actuals': 316 }, isTrendingUp: true },
-      { name: 'FB - Posts / Reels Created', data: { 'Aug 1 - 7': 0, 'Aug 8 - 14': 11, 'Aug 15 - 21': 13, 'Aug 22 - 28': 13, 'Aug 29 - 31': 51, 'August Actuals': 88 }, isTrendingUp: true },
-      { name: 'FB - Stories Created', data: { 'Aug 1 - 7': 0, 'Aug 8 - 14': 27, 'Aug 15 - 21': 16, 'Aug 22 - 28': 7, 'Aug 29 - 31': 26, 'August Actuals': 80 }, isTrendingUp: true },
-      { name: 'FB - Impressions', data: { 'Aug 1 - 7': '155,884', 'Aug 8 - 14': '168,933', 'Aug 15 - 21': '180,554', 'Aug 22 - 28': '146,388', 'Aug 29 - 31': '137,603', 'August Actuals': '799,066' }, isTrendingUp: true },
-      { name: 'FB - Engagement', data: { 'Aug 1 - 7': 9, 'Aug 8 - 14': 283, 'Aug 15 - 21': 609, 'Aug 22 - 28': 648, 'Aug 29 - 31': 231, 'August Actuals': '1,873' }, isTrendingUp: true },
-      { name: 'FB - Engagement Rate', data: { 'Aug 1 - 7': '0.01%', 'Aug 8 - 14': '0.17%', 'Aug 15 - 21': '0.34%', 'Aug 22 - 28': '0.31%', 'Aug 29 - 31': '0.17%', 'August Actuals': '0.27%' }, isTrendingUp: true },
+      { name: 'FB - Total Followers', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': '2,500', 'Apr': '2,650', 'May': '2,780', 'Jun': '2,900', 'Jul': '3,000', 'Aug': '3,177', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'FB - Follower Growth', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': 140, 'Apr': 150, 'May': 130, 'Jun': 120, 'Jul': 100, 'Aug': 316, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'FB - Posts', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': 40, 'Apr': 45, 'May': 50, 'Jun': 60, 'Jul': 75, 'Aug': 88, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'FB - Post Reach', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': 450123, 'Apr': 510450, 'May': 580112, 'Jun': 610834, 'Jul': 650912, 'Aug': 699066, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'FB - Engagement', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': '1,200', 'Apr': '1,350', 'May': '1,500', 'Jun': '1,600', 'Jul': '1,750', 'Aug': '1,873', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'FB - Engagement Rate', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': '0.22%', 'Apr': '0.22%', 'May': '0.22%', 'Jun': '0.23%', 'Jul': '0.23%', 'Aug': '0.27%', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
     ],
+  },
+  {
+        name: 'Email Marketing',
+        metrics: [
+            { name: 'EM - Campaigns Sent', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '-', 'Apr': '-', 'May': '-', 'Jun': '-', 'Jul': '-', 'Aug': '-', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' } },
+            { name: 'EM - Emails Delivered', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '-', 'Apr': '-', 'May': '-', 'Jun': '-', 'Jul': '-', 'Aug': '-', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' } },
+            { name: 'EM - Emails Opened', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '-', 'Apr': '-', 'May': '-', 'Jun': '-', 'Jul': '-', 'Aug': '-', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' } },
+            { name: 'EM - Open Rate', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '22.5%', 'Apr': '23.1%', 'May': '22.8%', 'Jun': '24.0%', 'Jul': '24.2%', 'Aug': '24.5%', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' } },
+            { name: 'EM - Click Rate', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '2.8%', 'Apr': '2.9%', 'May': '3.1%', 'Jun': '3.0%', 'Jul': '3.2%', 'Aug': '3.4%', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' } },
+            { name: 'EM - Newsletters', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': 2, 'Apr': 2, 'May': 2, 'Jun': 2, 'Jul': 2, 'Aug': 2, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' } },
+        ]
   },
   {
     name: 'Website',
     metrics: [
-      { name: 'Website - Sessions', data: { 'Aug 1 - 7': '1,200', 'Aug 8 - 14': '1,350', 'Aug 15 - 21': '1,400', 'Aug 22 - 28': '1,550', 'Aug 29 - 31': '900', 'August Actuals': '6,400' }, isStarred: true, isTrendingUp: true },
-      { name: 'Website - Users', data: { 'Aug 1 - 7': '950', 'Aug 8 - 14': '1,050', 'Aug 15 - 21': '1,100', 'Aug 22 - 28': '1,200', 'Aug 29 - 31': '700', 'August Actuals': '4,900' }, isTrendingUp: true },
-      { name: 'Website - Bounce Rate', data: { 'Aug 1 - 7': '45%', 'Aug 8 - 14': '42%', 'Aug 15 - 21': '43%', 'Aug 22 - 28': '40%', 'Aug 29 - 31': '38%', 'August Actuals': '41.5%' }, isTrendingDown: true },
-      { name: 'Website - Goal Completions', data: { 'Aug 1 - 7': 50, 'Aug 8 - 14': 65, 'Aug 15 - 21': 70, 'Aug 22 - 28': 80, 'Aug 29 - 31': 45, 'August Actuals': 310 }, isTrendingUp: true },
+      { name: 'Website - Users', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': '4,000', 'Apr': '4,100', 'May': '4,300', 'Jun': '4,500', 'Jul': '4,700', 'Aug': '4,900', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isStarred: true, isTrendingUp: true },
+      { name: 'Website - Bounce Rate', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': '48%', 'Apr': '46%', 'May': '44%', 'Jun': '43%', 'Jul': '42%', 'Aug': '41.5%', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingDown: true },
+      { name: 'Website - SEO Blog Posts', sourceType: 'Manual', data: { 'Jan': '-', 'Feb': '-', 'Mar': 4, 'Apr': 4, 'May': 5, 'Jun': 4, 'Jul': 5, 'Aug': 4, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' } },
     ],
   },
   {
     name: 'Meta Ads',
     metrics: [
-      { name: 'Meta - Spend', data: { 'Aug 1 - 7': '$1,500', 'Aug 8 - 14': '$1,800', 'Aug 15 - 21': '$1,650', 'Aug 22 - 28': '$2,000', 'Aug 29 - 31': '$1,200', 'August Actuals': '$8,150' }, isStarred: true, isTrendingUp: true },
-      { name: 'Meta - Impressions', data: { 'Aug 1 - 7': '150,000', 'Aug 8 - 14': '175,000', 'Aug 15 - 21': '160,000', 'Aug 22 - 28': '190,000', 'Aug 29 - 31': '110,000', 'August Actuals': '785,000' }, isTrendingUp: true },
-      { name: 'Meta - Clicks', data: { 'Aug 1 - 7': '1,200', 'Aug 8 - 14': '1,500', 'Aug 15 - 21': '1,300', 'Aug 22 - 28': '1,600', 'Aug 29 - 31': '900', 'August Actuals': '6,500' }, isTrendingUp: true },
-      { name: 'Meta - Conversions', data: { 'Aug 1 - 7': 30, 'Aug 8 - 14': 45, 'Aug 15 - 21': 40, 'Aug 22 - 28': 55, 'Aug 29 - 31': 35, 'August Actuals': 205 }, isTrendingUp: true },
-      { name: 'Meta - ROAS', data: { 'Aug 1 - 7': '2.5x', 'Aug 8 - 14': '3.1x', 'Aug 15 - 21': '2.9x', 'Aug 22 - 28': '3.5x', 'Aug 29 - 31': '3.2x', 'August Actuals': '3.0x' }, isTrendingUp: true },
+      { name: 'Meta - Spend', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '$6,000', 'Apr': '$6,500', 'May': '$7,000', 'Jun': '$7,500', 'Jul': '$8,000', 'Aug': '$8,150', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isStarred: true, isTrendingUp: true },
+      { name: 'Meta - Impressions', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '600,000', 'Apr': '650,000', 'May': '700,000', 'Jun': '720,000', 'Jul': '750,000', 'Aug': '785,000', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'Meta - Clicks', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '5,000', 'Apr': '5,500', 'May': '5,800', 'Jun': '6,000', 'Jul': '6,200', 'Aug': '6,500', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'Meta - Conversions', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': 150, 'Apr': 165, 'May': 175, 'Jun': 185, 'Jul': 195, 'Aug': 205, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'Meta - ROAS', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '2.8x', 'Apr': '2.9x', 'May': '3.0x', 'Jun': '3.2x', 'Jul': '3.1x', 'Aug': '3.0x', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
     ],
   },
   {
     name: 'Google Ads',
     metrics: [
-      { name: 'GA - Spend', data: { 'Aug 1 - 7': '$2,000', 'Aug 8 - 14': '$2,200', 'Aug 15 - 21': '$2,100', 'Aug 22 - 28': '$2,500', 'Aug 29 - 31': '$1,500', 'August Actuals': '$10,300' }, isStarred: true, isTrendingUp: true },
-      { name: 'GA - Impressions', data: { 'Aug 1 - 7': '80,000', 'Aug 8 - 14': '90,000', 'Aug 15 - 21': '85,000', 'Aug 22 - 28': '100,000', 'Aug 29 - 31': '60,000', 'August Actuals': '415,000' }, isTrendingUp: true },
-      { name: 'GA - CTR', data: { 'Aug 1 - 7': '2.5%', 'Aug 8 - 14': '2.8%', 'Aug 15 - 21': '2.7%', 'Aug 22 - 28': '3.0%', 'Aug 29 - 31': '3.1%', 'August Actuals': '2.85%' }, isTrendingUp: true },
-      { name: 'GA - Conversions', data: { 'Aug 1 - 7': 40, 'Aug 8 - 14': 50, 'Aug 15 - 21': 48, 'Aug 22 - 28': 60, 'Aug 29 - 31': 42, 'August Actuals': 240 }, isTrendingUp: true },
-      { name: 'GA - CPA', data: { 'Aug 1 - 7': '$50.00', 'Aug 8 - 14': '$44.00', 'Aug 15 - 21': '$43.75', 'Aug 22 - 28': '$41.67', 'Aug 29 - 31': '$35.71', 'August Actuals': '$42.91' }, isTrendingDown: true },
+      { name: 'GA - Spend', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '$8,000', 'Apr': '$8,500', 'May': '$9,000', 'Jun': '$9,500', 'Jul': '$10,000', 'Aug': '$10,300', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isStarred: true, isTrendingUp: true },
+      { name: 'GA - Impressions', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '350,000', 'Apr': '370,000', 'May': '380,000', 'Jun': '390,000', 'Jul': '400,000', 'Aug': '415,000', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'GA - CTR', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '2.2%', 'Apr': '2.3%', 'May': '2.4%', 'Jun': '2.6%', 'Jul': '2.7%', 'Aug': '2.85%', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'GA - Conversions', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': 180, 'Apr': 190, 'May': 200, 'Jun': 210, 'Jul': 220, 'Aug': 240, 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingUp: true },
+      { name: 'GA - CPA', sourceType: 'API', data: { 'Jan': '-', 'Feb': '-', 'Mar': '$44.44', 'Apr': '$44.73', 'May': '$45.00', 'Jun': '$45.23', 'Jul': '$45.45', 'Aug': '$42.91', 'Sep': '-', 'Oct': '-', 'Nov': '-', 'Dec': '-' }, isTrendingDown: true },
     ],
   },
 ];
@@ -103,7 +132,7 @@ export const integrationsData: Integration[] = [
 export const leadsData: Lead[] = [
     { id: '1', name: 'John Doe', email: 'john.doe@example.com', company: 'Acme Corp', channel: 'LinkedIn', campaign: 'Q3 Product Launch', campaignGroup: 'Product Marketing', dateAdded: '2023-08-15', stage: LeadStage.Opportunity, dealValue: 5000 },
     { id: '2', name: 'Jane Smith', email: 'jane.smith@example.com', company: 'Innovate LLC', channel: 'Facebook', campaign: 'Summer Sale', campaignGroup: 'Growth', dateAdded: '2023-08-18', stage: LeadStage.Conversion, dealValue: 12500 },
-    { id: '3', name: 'Peter Jones', email: 'peter.jones@example.com', company: 'Tech Solutions', channel: 'Website', campaign: 'Free Trial Offer', campaignGroup: 'Product Marketing', dateAdded: '2023-08-21', stage: LeadStage.Lead },
+    { id: '3', name: 'Peter Jones', email: 'peter.jones@example.com', company: 'Tech Solutions', channel: 'Website', campaign: 'Free Trial Offer', campaignGroup: 'Product Marketing', dateAdded: '2023-08-21', stage: LeadStage.Qualified },
     { id: '4', name: 'Mary Johnson', email: 'mary.j@example.com', company: 'Data Systems', channel: 'LinkedIn', campaign: 'Q3 Product Launch', campaignGroup: 'Product Marketing', dateAdded: '2023-08-22', stage: LeadStage.Discarded },
 ];
 
@@ -126,8 +155,8 @@ export const campaignsData: Campaign[] = [
     { id: '2', name: 'Summer Sale', campaignGroupId: '2', status: 'Completed', startDate: '2023-06-15', endDate: '2023-07-31', leads: 152, cost: 8500 },
     { id: '3', name: 'Free Trial Offer', campaignGroupId: '1', status: 'Active', startDate: '2023-08-01', endDate: '2023-10-31', leads: 98, cost: 3200 },
     { id: '4', name: 'Webinar Series', campaignGroupId: '3', status: 'Paused', startDate: '2023-09-01', endDate: '2023-09-30', leads: 45, cost: 1500 },
-    { id: '5', name: 'Seguridad Electrónica - Industrias - Lectura de Placas', campaignGroupId: '4', status: 'Active', startDate: '2023-08-10', endDate: '2023-09-10', leads: 12, cost: 2000, sent: 5000, delivered: 4950, opens: 1500, clicks: 300, revenue: 7500 },
-    { id: '6', name: 'Seguridad Electrónica - Industrias - Reconocimiento facial', campaignGroupId: '4', status: 'Active', startDate: '2023-08-15', endDate: '2023-09-15', leads: 18, cost: 2500, sent: 6200, delivered: 6100, opens: 1800, clicks: 450, revenue: 11200 },
+    { id: '5', name: 'Seguridad Electrónica - Industrias - Lectura de Placas', campaignGroupId: '4', status: 'Completed', startDate: '2023-08-10', endDate: '2023-08-25', leads: 12, cost: 2000, sent: 5000, delivered: 4950, opens: 1500, clicks: 300, revenue: 7500 },
+    { id: '6', name: 'Seguridad Electrónica - Industrias - Reconocimiento facial', campaignGroupId: '4', status: 'Completed', startDate: '2023-08-15', endDate: '2023-07-15', leads: 18, cost: 2500, sent: 6200, delivered: 6100, opens: 1800, clicks: 450, revenue: 11200 },
     { id: '7', name: 'Google Search - "Security Solutions"', campaignGroupId: '5', status: 'Active', startDate: '2023-08-01', endDate: '2023-10-31', leads: 42, cost: 6800, impressions: 150000, clicks: 750, cpc: 9.06, conversions: 42, cpa: 161.90, roas: 3.5 },
     { id: '8', name: 'Instagram Stories - Product Demo', campaignGroupId: '6', status: 'Completed', startDate: '2023-08-20', endDate: '2023-08-27', leads: 5, cost: 0, reach: 12000, engagement: 850, followerGrowth: 150, websiteClicks: 35 },
     { id: '9', name: 'Marketing OS Launch Webinar', campaignGroupId: '7', status: 'Completed', startDate: '2023-08-30', endDate: '2023-08-30', leads: 75, cost: 500, registered: 250, attendees: 180 },
@@ -171,6 +200,7 @@ export const campaignKpiOptions: { [key: string]: { id: keyof Campaign, label: s
 export const initialGoalsData: GoalSettings = {
     leads: {
         total: 100,
+        qualified: 50,
         opportunities: 25,
         conversions: 10,
     },
@@ -183,10 +213,6 @@ export const initialGoalsData: GoalSettings = {
             'FB - Total Followers': 3500,
             'FB - Follower Growth': 300,
             'FB - Engagement': 2000,
-        },
-        'Website': {
-            'Website - Sessions': 7000,
-            'Website - Goal Completions': 350,
         },
         'Meta Ads': {
             'Meta - Conversions': 250,

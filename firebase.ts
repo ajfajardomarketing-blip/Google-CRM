@@ -1,3 +1,4 @@
+
 import { initializeApp } from "firebase/app";
 import { 
     getFirestore, 
@@ -15,7 +16,7 @@ import {
     deleteField
 } from "firebase/firestore";
 import { firebaseConfig } from './firebaseConfig';
-import { Lead, CampaignGroup, Campaign, GoalSettings } from './types';
+import { Lead, CampaignGroup, Campaign, GoalSettings, PlatformMetrics } from './types';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -84,10 +85,16 @@ export const updateLead = async (updatedLead: Lead) => {
     const leadDocRef = doc(db, 'leads', id);
     const dataToUpdate: {[key: string]: any} = leadData;
 
-    // If the incoming object from the form doesn't have a dealValue,
-    // we interpret it as a request to remove it from the database.
+    // If the incoming object from the form doesn't have certain optional fields,
+    // we interpret it as a request to remove them from the database using deleteField().
     if (!('dealValue' in dataToUpdate)) {
         dataToUpdate.dealValue = deleteField();
+    }
+    if (!('jobTitle' in dataToUpdate)) {
+        dataToUpdate.jobTitle = deleteField();
+    }
+    if (!('notes' in dataToUpdate)) {
+        dataToUpdate.notes = deleteField();
     }
     
     try {
@@ -183,6 +190,17 @@ export const updateGoals = async (newGoals: GoalSettings) => {
         await setDoc(goalsDocRef, newGoals);
     } catch (error) {
         console.error("Error updating goals: ", error);
+        throw error;
+    }
+};
+
+export const updateActualMetrics = async (newMetrics: PlatformMetrics[]) => {
+    const metricsDocRef = doc(db, 'settings', 'actualMetrics');
+    try {
+        // Firestore works with objects, so we wrap our array in an object field.
+        await setDoc(metricsDocRef, { data: newMetrics });
+    } catch (error) {
+        console.error("Error updating actual metrics: ", error);
         throw error;
     }
 };

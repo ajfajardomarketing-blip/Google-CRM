@@ -13,6 +13,8 @@ interface EditCampaignModalProps {
   campaignGroups: CampaignGroup[];
 }
 
+const calculatedKpis = ['conversions', 'cpa', 'roas', 'revenue'];
+
 const EditCampaignModal: React.FC<EditCampaignModalProps> = ({ isOpen, onClose, onUpdateCampaign, onDeleteCampaign, campaign, campaignGroups }) => {
   const [formData, setFormData] = useState<Partial<Campaign>>({});
   const [isDeleting, setIsDeleting] = useState(false);
@@ -61,6 +63,9 @@ const EditCampaignModal: React.FC<EditCampaignModalProps> = ({ isOpen, onClose, 
     const numericFields: (keyof Campaign)[] = ['cost', ...allKpis.map(k => k.id)];
 
     for (const key of numericFields) {
+        // We don't want to overwrite our calculated fields back to the DB
+        if (calculatedKpis.includes(key as string)) continue;
+
         if (typeof finalData[key] !== 'number' || isNaN(finalData[key] as number)) {
             // @ts-ignore
             finalData[key] = 0;
@@ -156,8 +161,10 @@ const EditCampaignModal: React.FC<EditCampaignModalProps> = ({ isOpen, onClose, 
             )}
             
             {channelKpis.map(kpi => {
-              // Revenue is calculated automatically, so it should not be editable.
-              if (kpi.id === 'revenue') return null;
+              // Do not render input fields for automatically calculated KPIs.
+              if (calculatedKpis.includes(kpi.id)) {
+                return null;
+              }
 
               return (
                 <div key={kpi.id}>

@@ -1,7 +1,6 @@
-
 // Configuration from your Firebase project
 export const firebaseConfig = {
-  apiKey: "AIzaSyCqVjvoxdcx31Ha7amEtPavtdmCk2efNIM",
+  apiKey: "AIzaSyGENERATED_PLACEHOLDER_FOR_FIREBASE",
   authDomain: "marketing-os-f8117.firebaseapp.com",
   projectId: "marketing-os-f8117",
   storageBucket: "marketing-os-f8117.firebaseapp.com",

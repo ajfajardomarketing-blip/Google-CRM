@@ -23,74 +23,55 @@ return snapshot;`
    * @param seen A set to track visited objects to prevent infinite recursion.
    * @returns A cleaned, JSON-serializable object.
    */
-  const cleanResultForJSON = (obj: any, seen = new Set()): any => {
-    if (obj === null || obj === undefined) {
+  const cleanResultForJSON = (obj: any, seen = new WeakSet()): any => {
+    if (obj === null || typeof obj !== 'object') {
       return obj;
     }
     
-    // For non-primitive types, check for circular references.
-    if (typeof obj === 'object') {
-        if (seen.has(obj)) {
-            return '[Circular Reference]';
-        }
-        seen.add(obj);
+    if (seen.has(obj)) {
+        return '[Circular Reference]';
     }
+    seen.add(obj);
 
-    // Firestore Timestamp: has toDate method
-    if (obj.toDate && typeof obj.toDate === 'function') {
+    // Handle specific Firestore types first
+    if (typeof obj.toDate === 'function') { // Timestamp
       return obj.toDate().toISOString();
     }
-    
-    // Firestore DocumentReference: has path and parent properties
-    if (typeof obj.path === 'string' && obj.parent) {
-      return `DocumentReference(path=${obj.path})`;
+    if (Array.isArray(obj.docs) && obj.query) { // QuerySnapshot
+      return obj.docs.map(d => cleanResultForJSON(d, seen));
     }
-    
-    // Firestore DocumentSnapshot: has data() method and id property
-    if (typeof obj.data === 'function' && typeof obj.id === 'string') {
+    if (typeof obj.data === 'function' && typeof obj.id === 'string') { // DocumentSnapshot
       return { id: obj.id, ...cleanResultForJSON(obj.data(), seen) };
     }
-
-    // Firestore QuerySnapshot: has docs property (array) and query property
-    if (Array.isArray(obj.docs) && obj.query) {
-      return obj.docs.map(doc => cleanResultForJSON(doc, seen));
+    
+    // The main Firestore instance is a common source of circular refs.
+    // It has a `type` of 'firestore' but lacks a `.firestore` property that sub-objects have.
+    if (obj.type === 'firestore') {
+        return '[Firestore Instance]';
     }
     
-    // Recursively clean arrays
+    // Most other SDK objects (DocRef, CollRef, Query) have a `.firestore` property referencing the main DB.
+    // This is a good catch-all.
+    if (obj.firestore) {
+        if (obj.path) { // DocumentReference and CollectionReference have a path.
+            return `[Reference: ${obj.path}]`;
+        }
+        return '[Firestore Object]'; // Fallback for other types like Query.
+    }
+
+    // Handle arrays
     if (Array.isArray(obj)) {
       return obj.map(item => cleanResultForJSON(item, seen));
     }
 
-    // Recursively clean plain objects
-    if (typeof obj === 'object' && Object.getPrototypeOf(obj) === Object.prototype) {
-      const cleaned: { [key: string]: any } = {};
-      for (const key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          cleaned[key] = cleanResultForJSON(obj[key], seen);
-        }
+    // At this point, assume it's a plain object (like document data) and recurse
+    const cleaned: { [key: string]: any } = {};
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        cleaned[key] = cleanResultForJSON(obj[key], seen);
       }
-      return cleaned;
     }
-
-    // For any unhandled complex objects that are not plain objects,
-    // return a string representation to avoid serialization errors.
-    if (typeof obj === 'object') {
-        let objectType = 'Object';
-        try {
-            objectType = obj.constructor.name;
-        } catch (e) { /* ignore */ }
-        
-        // A Query object will have a `type` property or specific methods
-        if (obj.type === 'query' || obj.type === 'collection-group') {
-             return `[Firestore Query]`;
-        }
-
-        // Fallback for any other complex object that made it this far
-        return `[Unhandled Complex Type: ${objectType}]`;
-    }
-
-    // Return primitives and other types (like functions) as is
-    return obj;
+    return cleaned;
   };
 
 

@@ -13,19 +13,21 @@ interface EditLeadModalProps {
   campaignGroups: CampaignGroup[];
 }
 
-const stageOrder = [LeadStage.Lead, LeadStage.Opportunity, LeadStage.Conversion];
+const stageOrder = [LeadStage.Lead, LeadStage.Qualified, LeadStage.Opportunity, LeadStage.Conversion];
 
 const EditLeadModal: React.FC<EditLeadModalProps> = ({ isOpen, onClose, onUpdateLead, onDeleteLead, lead, campaigns, campaignGroups }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
+    jobTitle: '',
     campaignGroupId: '',
     campaignId: '',
     stage: LeadStage.Lead,
     dealValue: '',
     dateAdded: '',
     stageDates: {} as Partial<Record<LeadStage, string>>,
+    notes: '',
   });
   const [isDeleting, setIsDeleting] = useState(false);
   const [channel, setChannel] = useState('');
@@ -39,12 +41,14 @@ const EditLeadModal: React.FC<EditLeadModalProps> = ({ isOpen, onClose, onUpdate
         name: lead.name,
         email: lead.email,
         company: lead.company,
+        jobTitle: lead.jobTitle || '',
         stage: lead.stage,
         campaignGroupId: group ? String(group.id) : '',
         campaignId: campaign ? String(campaign.id) : '',
         dealValue: lead.dealValue ? String(lead.dealValue) : '',
         dateAdded: lead.dateAdded,
         stageDates: lead.stageDates || { [LeadStage.Lead]: lead.dateAdded },
+        notes: lead.notes || '',
       });
       setChannel(lead.channel);
     }
@@ -56,16 +60,30 @@ const EditLeadModal: React.FC<EditLeadModalProps> = ({ isOpen, onClose, onUpdate
   }, [formData.campaignGroupId, campaigns]);
   
   const handleStageDateChange = (stage: LeadStage, date: string) => {
-    setFormData(prev => ({
-      ...prev,
-      stageDates: {
-        ...prev.stageDates,
-        [stage]: date,
-      }
-    }));
+    if (stage === LeadStage.Lead) {
+        // If user edits the lead date, it affects dateAdded and qualifiedDate
+        setFormData(prev => ({
+            ...prev,
+            dateAdded: date, // Update the canonical dateAdded
+            stageDates: {
+                ...prev.stageDates,
+                [LeadStage.Lead]: date,
+                [LeadStage.Qualified]: date,
+            }
+        }));
+    } else {
+        // For other dates (Opportunity, Conversion), just update that date
+        setFormData(prev => ({
+            ...prev,
+            stageDates: {
+                ...prev.stageDates,
+                [stage]: date,
+            }
+        }));
+    }
   };
   
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
     if (name === 'campaignGroupId') {
@@ -87,15 +105,27 @@ const EditLeadModal: React.FC<EditLeadModalProps> = ({ isOpen, onClose, onUpdate
         
         const newStageDates = { ...formData.stageDates };
 
-        // If stage doesn't have a date, set it to today
-        if (!newStageDates[newStage]) {
+        // Always ensure Lead date is correct.
+        newStageDates[LeadStage.Lead] = formData.dateAdded;
+
+        // If new stage is Qualified or beyond, set Qualified date to match registration date.
+        if (newStageIndex >= stageOrder.indexOf(LeadStage.Qualified)) {
+            newStageDates[LeadStage.Qualified] = formData.dateAdded;
+        }
+
+        // If advancing to a new stage that isn't locked and doesn't have a date yet, set it to today.
+        if (newStageIndex > oldStageIndex && !newStageDates[newStage] && newStage !== LeadStage.Lead && newStage !== LeadStage.Qualified) {
             newStageDates[newStage] = new Date().toISOString().split('T')[0];
         }
 
-        // If moving backwards, clear future stage dates
+        // If moving backwards, clear dates for future stages that are not locked.
         if (newStageIndex < oldStageIndex) {
             for (let i = newStageIndex + 1; i < stageOrder.length; i++) {
-                delete newStageDates[stageOrder[i]];
+                const stageToClear = stageOrder[i];
+                // Only clear Opportunity and Conversion dates
+                if (stageToClear === LeadStage.Opportunity || stageToClear === LeadStage.Conversion) {
+                    delete newStageDates[stageToClear];
+                }
             }
         }
         
@@ -116,6 +146,23 @@ const EditLeadModal: React.FC<EditLeadModalProps> = ({ isOpen, onClose, onUpdate
     const selectedCampaign = campaigns.find(c => c.id === formData.campaignId);
 
     if (!selectedGroup || !selectedCampaign || !lead) return;
+    
+    // Create a clean copy of stage dates to ensure data integrity
+    const finalStageDates: Partial<Record<LeadStage, string>> = {};
+    const currentStageIndex = stageOrder.indexOf(formData.stage);
+
+    for(let i = 0; i <= currentStageIndex; i++) {
+        const stage = stageOrder[i];
+        if (stage === LeadStage.Lead || stage === LeadStage.Qualified) {
+            finalStageDates[stage] = formData.dateAdded;
+        } else if (formData.stageDates[stage]) {
+            finalStageDates[stage] = formData.stageDates[stage];
+        } else {
+            // This case shouldn't happen if handleChange is correct, but as a fallback
+            finalStageDates[stage] = new Date().toISOString().split('T')[0];
+        }
+    }
+
 
     const updatedLead: Lead = {
       ...lead,
@@ -127,13 +174,25 @@ const EditLeadModal: React.FC<EditLeadModalProps> = ({ isOpen, onClose, onUpdate
       campaign: selectedCampaign.name,
       stage: formData.stage,
       dateAdded: formData.dateAdded,
-      stageDates: formData.stageDates,
+      stageDates: finalStageDates,
     };
+
+    if (formData.jobTitle && formData.jobTitle.trim()) {
+      updatedLead.jobTitle = formData.jobTitle.trim();
+    } else {
+      delete updatedLead.jobTitle;
+    }
 
     if (formData.dealValue) {
         updatedLead.dealValue = parseFloat(formData.dealValue);
     } else {
         delete updatedLead.dealValue;
+    }
+
+    if (formData.notes && formData.notes.trim()) {
+      updatedLead.notes = formData.notes.trim();
+    } else {
+      delete updatedLead.notes;
     }
 
     onUpdateLead(updatedLead);
@@ -160,15 +219,22 @@ const EditLeadModal: React.FC<EditLeadModalProps> = ({ isOpen, onClose, onUpdate
 
       return stageOrder.map((stage, index) => {
           if (index > currentStageIndex) return null;
+
+          const isLocked = stage === LeadStage.Qualified;
+          // The value for Lead Date is now directly from stageDates.
+          // The value for Qualified date also comes from stageDates, but it's locked and gets updated when Lead Date changes.
+          const dateValue = formData.stageDates[stage] || '';
+          
           return (
               <div key={stage}>
                   <label className="block text-base font-medium text-gray-300">{stage} Date</label>
                   <input
                       type="date"
-                      value={formData.stageDates[stage] || ''}
+                      value={dateValue}
                       onChange={(e) => handleStageDateChange(stage, e.target.value)}
-                      className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]"
+                      className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8] disabled:bg-black disabled:text-gray-400"
                       required
+                      disabled={isLocked}
                   />
               </div>
           );
@@ -197,6 +263,10 @@ const EditLeadModal: React.FC<EditLeadModalProps> = ({ isOpen, onClose, onUpdate
               <div className="sm:col-span-2">
                 <label className="block text-base font-medium text-gray-300">Company</label>
                 <input type="text" name="company" value={formData.company} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-base font-medium text-gray-300">Job Title</label>
+                <input type="text" name="jobTitle" value={formData.jobTitle || ''} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" />
               </div>
               <div>
                 <label className="block text-base font-medium text-gray-300">Stage</label>
@@ -234,6 +304,18 @@ const EditLeadModal: React.FC<EditLeadModalProps> = ({ isOpen, onClose, onUpdate
                   {availableCampaigns.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
+            </div>
+
+            <div className="sm:col-span-2 mt-4">
+              <label className="block text-base font-medium text-gray-300">Notes</label>
+              <textarea
+                  name="notes"
+                  value={formData.notes || ''}
+                  onChange={handleChange}
+                  rows={4}
+                  className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]"
+                  placeholder="Add any relevant information about this lead..."
+              />
             </div>
             
             <div className="mt-4 pt-4 border-t border-gray-700">

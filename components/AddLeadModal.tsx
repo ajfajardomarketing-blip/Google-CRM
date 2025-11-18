@@ -16,11 +16,13 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onAddLead,
     name: '',
     email: '',
     company: '',
+    jobTitle: '',
     campaignGroupId: '',
     campaignId: '',
     stage: LeadStage.Lead,
     dealValue: '',
     dateAdded: new Date().toISOString().split('T')[0],
+    notes: '',
   });
 
   const [channel, setChannel] = useState('');
@@ -31,7 +33,7 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onAddLead,
     return campaigns.filter(c => c.campaignGroupId === formData.campaignGroupId);
   }, [formData.campaignGroupId, campaigns]);
   
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
     if (name === 'campaignGroupId') {
@@ -59,6 +61,17 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onAddLead,
 
     if (!selectedGroup || !selectedCampaign) return;
 
+    const stageOrder = [LeadStage.Lead, LeadStage.Qualified, LeadStage.Opportunity, LeadStage.Conversion];
+    const currentStageIndex = stageOrder.indexOf(formData.stage);
+    const newStageDates: Partial<Record<LeadStage, string>> = {};
+
+    // Populate all stage dates up to and including the current stage with the dateAdded.
+    // This establishes the initial timeline. Dates for Opportunity and Conversion can be edited later.
+    for (let i = 0; i <= currentStageIndex; i++) {
+        const stage = stageOrder[i];
+        newStageDates[stage] = formData.dateAdded;
+    }
+
     const newLead: Omit<Lead, 'id'> = {
       name: formData.name,
       email: formData.email,
@@ -68,20 +81,26 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onAddLead,
       campaign: selectedCampaign.name,
       dateAdded: formData.dateAdded,
       stage: formData.stage,
-      stageDates: {
-        [formData.stage]: formData.dateAdded,
-      },
+      stageDates: newStageDates,
     };
     
+    if (formData.jobTitle && formData.jobTitle.trim()) {
+      newLead.jobTitle = formData.jobTitle.trim();
+    }
+
     if (formData.dealValue) {
         newLead.dealValue = parseFloat(formData.dealValue);
+    }
+    
+    if (formData.notes && formData.notes.trim()) {
+      newLead.notes = formData.notes.trim();
     }
 
     onAddLead(newLead);
 
     onClose();
     // Reset form
-    setFormData({ name: '', email: '', company: '', campaignGroupId: '', campaignId: '', stage: LeadStage.Lead, dealValue: '', dateAdded: new Date().toISOString().split('T')[0] });
+    setFormData({ name: '', email: '', company: '', jobTitle: '', campaignGroupId: '', campaignId: '', stage: LeadStage.Lead, dealValue: '', dateAdded: new Date().toISOString().split('T')[0], notes: '' });
     setChannel('');
   };
 
@@ -107,6 +126,10 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onAddLead,
             <div className="sm:col-span-2">
               <label className="block text-base font-medium text-gray-300">Company</label>
               <input type="text" name="company" value={formData.company} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-base font-medium text-gray-300">Job Title</label>
+              <input type="text" name="jobTitle" value={formData.jobTitle} onChange={handleChange} className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" />
             </div>
             
             {/* Source Info */}
@@ -154,6 +177,17 @@ const AddLeadModal: React.FC<AddLeadModalProps> = ({ isOpen, onClose, onAddLead,
                   className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8] disabled:bg-gray-700 disabled:text-gray-400" 
                   disabled={formData.stage !== LeadStage.Opportunity && formData.stage !== LeadStage.Conversion}
                   placeholder="e.g., 5000"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-base font-medium text-gray-300">Notes</label>
+              <textarea
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleChange}
+                  rows={4}
+                  className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]"
+                  placeholder="Add any relevant information about this lead..."
               />
             </div>
           </div>

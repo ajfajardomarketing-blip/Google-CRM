@@ -37,28 +37,28 @@ const AddCampaignGroupModal: React.FC<AddCampaignGroupModalProps> = ({ isOpen, o
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4">
       <div className="bg-gray-900 rounded-lg shadow-xl w-full max-w-lg">
-        <div className="p-6 border-b border-gray-700">
-          <h2 className="text-2xl font-bold text-white">Add New Campaign Group</h2>
+        <div className="p-5 border-b border-gray-700">
+          <h2 className="text-xl font-bold text-white">Add New Campaign Group</h2>
         </div>
         <form onSubmit={handleSubmit}>
-          <div className="p-6 space-y-4">
+          <div className="p-5 space-y-4">
             <div>
-              <label className="block text-base font-medium text-gray-300">Group Name</label>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Seguridad Electrónica - Industrias" className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required />
+              <label className="block text-sm font-medium text-gray-300">Group Name</label>
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Seguridad Electrónica - Industrias" className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-1.5 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required />
             </div>
             <div>
-              <label className="block text-base font-medium text-gray-300">Channel</label>
-              <select value={channel} onChange={(e) => setChannel(e.target.value)} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required>
+              <label className="block text-sm font-medium text-gray-300">Channel</label>
+              <select value={channel} onChange={(e) => setChannel(e.target.value)} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-1.5 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required>
                  <option value="">Select a Channel</option>
                  {channels.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
           </div>
           <div className="bg-black px-6 py-4 flex justify-end gap-3">
-            <button type="button" onClick={onClose} className="bg-gray-700 py-2 px-4 border border-gray-600 rounded-md shadow-sm text-base font-medium text-gray-300 hover:bg-gray-600 focus:outline-none">
+            <button type="button" onClick={onClose} className="bg-gray-700 py-1.5 px-4 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 hover:bg-gray-600 focus:outline-none">
               Cancel
             </button>
-            <button type="submit" className="bg-[#d356f8] text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-[#b844d9] transition duration-300">
+            <button type="submit" className="bg-[#d356f8] text-white font-semibold py-1.5 px-4 rounded-lg shadow-md hover:bg-[#b844d9] transition duration-300">
               Save Group
             </button>
           </div>
@@ -117,25 +117,25 @@ const AddCampaignModal: React.FC<AddCampaignModalProps> = ({ isOpen, onClose, on
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4">
       <div className="bg-gray-900 rounded-lg shadow-xl w-full max-w-lg">
-        <div className="p-6 border-b border-gray-700">
-          <h2 className="text-2xl font-bold text-white">Add New Campaign</h2>
+        <div className="p-5 border-b border-gray-700">
+          <h2 className="text-xl font-bold text-white">Add New Campaign</h2>
         </div>
         <form onSubmit={handleSubmit}>
-          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-base font-medium text-gray-300">Campaign Name</label>
-              <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="e.g., Lectura de Placas" className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required />
+              <label className="block text-sm font-medium text-gray-300">Campaign Name</label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="e.g., Lectura de Placas" className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-1.5 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required />
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-base font-medium text-gray-300">Campaign Group</label>
-              <select name="campaignGroupId" value={formData.campaignGroupId} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required>
+              <label className="block text-sm font-medium text-gray-300">Campaign Group</label>
+              <select name="campaignGroupId" value={formData.campaignGroupId} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-1.5 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required>
                  <option value="">Select a Group</option>
                  {campaignGroups.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
               </select>
             </div>
              <div>
-              <label className="block text-base font-medium text-gray-300">Status</label>
-              <select name="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required>
+              <label className="block text-sm font-medium text-gray-300">Status</label>
+              <select name="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-1.5 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required>
                  <option value="Active">Active</option>
                  <option value="Paused">Paused</option>
                  <option value="Completed">Completed</option>
@@ -143,19 +143,19 @@ const AddCampaignModal: React.FC<AddCampaignModalProps> = ({ isOpen, onClose, on
             </div>
             <div></div>
             <div>
-              <label className="block text-base font-medium text-gray-300">Start Date</label>
-              <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required />
+              <label className="block text-sm font-medium text-gray-300">Start Date</label>
+              <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-1.5 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" required />
             </div>
             <div>
-              <label className="block text-base font-medium text-gray-300">End Date</label>
-              <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" />
+              <label className="block text-sm font-medium text-gray-300">End Date</label>
+              <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} className="mt-1 block w-full bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm py-1.5 px-3 focus:outline-none focus:ring-[#d356f8] focus:border-[#d356f8]" />
             </div>
           </div>
           <div className="bg-black px-6 py-4 flex justify-end gap-3">
-            <button type="button" onClick={onClose} className="bg-gray-700 py-2 px-4 border border-gray-600 rounded-md shadow-sm text-base font-medium text-gray-300 hover:bg-gray-600 focus:outline-none">
+            <button type="button" onClick={onClose} className="bg-gray-700 py-1.5 px-4 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 hover:bg-gray-600 focus:outline-none">
               Cancel
             </button>
-            <button type="submit" className="bg-[#d356f8] text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-[#b844d9] transition duration-300">
+            <button type="submit" className="bg-[#d356f8] text-white font-semibold py-1.5 px-4 rounded-lg shadow-md hover:bg-[#b844d9] transition duration-300">
               Save Campaign
             </button>
           </div>
@@ -256,45 +256,49 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
         return counts;
     }, [leads, campaigns, campaignGroups]);
 
-    const campaignRevenueMap = useMemo(() => {
-        const revenueMap: Record<string, number> = {};
-        const convertedLeads = leads.filter(
-            l => l.stage === LeadStage.Conversion && l.dealValue && l.dealValue > 0
-        );
-
-        if (convertedLeads.length === 0 || campaigns.length === 0 || campaignGroups.length === 0) {
-            return revenueMap;
-        }
-
+    const campaignsWithCalculatedMetrics = useMemo(() => {
         const campaignLookup = new Map<string, string>();
         campaignGroups.forEach(group => {
-            const groupCampaigns = campaigns.filter(c => c.campaignGroupId === group.id);
-            groupCampaigns.forEach(campaign => {
+            campaigns.filter(c => c.campaignGroupId === group.id).forEach(campaign => {
                 campaignLookup.set(`${group.name}|${campaign.name}`, campaign.id);
             });
         });
 
-        convertedLeads.forEach(lead => {
-            const lookupKey = `${lead.campaignGroup}|${lead.campaign}`;
-            const campaignId = campaignLookup.get(lookupKey);
-            if (campaignId) {
-                revenueMap[campaignId] = (revenueMap[campaignId] || 0) + lead.dealValue!;
+        const conversionCounts = new Map<string, number>();
+        const revenueMap = new Map<string, number>();
+
+        leads.forEach(lead => {
+            if (lead.stage === LeadStage.Conversion) {
+                const campaignId = campaignLookup.get(`${lead.campaignGroup}|${lead.campaign}`);
+                if (campaignId) {
+                    conversionCounts.set(campaignId, (conversionCounts.get(campaignId) || 0) + 1);
+                    if (lead.dealValue) {
+                        revenueMap.set(campaignId, (revenueMap.get(campaignId) || 0) + lead.dealValue);
+                    }
+                }
             }
         });
 
-        return revenueMap;
+        return campaigns.map(campaign => {
+            const conversions = conversionCounts.get(campaign.id) || 0;
+            const revenue = revenueMap.get(campaign.id) || 0;
+            const cpa = conversions > 0 ? campaign.cost / conversions : 0;
+            const roas = campaign.cost > 0 ? revenue / campaign.cost : 0;
+
+            return {
+                ...campaign,
+                conversions,
+                revenue,
+                cpa,
+                roas,
+            };
+        });
     }, [leads, campaigns, campaignGroups]);
 
-    const campaignsWithCalculatedRevenue = useMemo(() => {
-        return campaigns.map(campaign => ({
-            ...campaign,
-            revenue: campaignRevenueMap[campaign.id] || 0,
-        }));
-    }, [campaigns, campaignRevenueMap]);
 
     const campaignsByGroup = useMemo(() => {
         const grouped: { [key: string]: Campaign[] } = {};
-        campaignsWithCalculatedRevenue.forEach(campaign => {
+        campaignsWithCalculatedMetrics.forEach(campaign => {
             if (!grouped[campaign.campaignGroupId]) {
                 grouped[campaign.campaignGroupId] = [];
             }
@@ -307,7 +311,7 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
         }
         
         return grouped;
-    }, [campaignsWithCalculatedRevenue]);
+    }, [campaignsWithCalculatedMetrics]);
 
     const formatKpiValue = (value: number | undefined, kpi: keyof Campaign | (string & {})) => {
         if (value === undefined || value === null) return 'N/A';
@@ -320,33 +324,33 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
 
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-white">Campaigns</h1>
-          <p className="text-lg text-gray-400 mt-1">Analyze the performance of your marketing campaigns.</p>
+          <h1 className="text-3xl font-bold text-white">Campaigns</h1>
+          <p className="text-base text-gray-400 mt-1">Analyze the performance of your marketing campaigns.</p>
         </div>
         <div className="flex gap-2 flex-shrink-0">
             <button
                 onClick={() => setIsKpiConfigOpen(true)}
-                className="bg-gray-700 border border-gray-600 text-gray-200 font-semibold py-2 px-4 rounded-lg shadow-sm hover:bg-gray-600 transition duration-300 flex items-center gap-2">
+                className="bg-gray-700 border border-gray-600 text-gray-200 font-semibold py-1.5 px-4 rounded-lg shadow-sm hover:bg-gray-600 transition duration-300 flex items-center gap-2">
                 <SettingsIcon className="w-5 h-5" />
                 Configure KPIs
             </button>
             <button 
                 onClick={() => setIsGroupModalOpen(true)}
-                className="bg-gray-700 border border-gray-600 text-gray-200 font-semibold py-2 px-4 rounded-lg shadow-sm hover:bg-gray-600 transition duration-300">
-                Add Campaign Group
+                className="bg-gray-700 border border-gray-600 text-gray-200 font-semibold py-1.5 px-4 rounded-lg shadow-sm hover:bg-gray-600 transition duration-300">
+                Add Group
             </button>
             <button 
                 onClick={() => setIsCampaignModalOpen(true)}
-                className="bg-[#d356f8] text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-[#b844d9] transition duration-300">
-                Add New Campaign
+                className="bg-[#d356f8] text-white font-semibold py-1.5 px-4 rounded-lg shadow-md hover:bg-[#b844d9] transition duration-300">
+                Add Campaign
             </button>
         </div>
       </div>
       
-      <div className="space-y-8">
+      <div className="space-y-6">
         {campaignGroups.map((group, index) => {
             const groupCampaigns = campaignsByGroup[group.id] || [];
             const channelKpiConfig = kpiConfig[group.channel] || {};
@@ -380,11 +384,11 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
             }, [groupCampaigns, leadCountsByCampaignId, availableKpis]);
 
             return (
-            <div key={group.id} className="bg-gray-900 p-4 sm:p-6 rounded-xl shadow-lg">
+            <div key={group.id} className="bg-gray-900 p-4 rounded-xl shadow-lg">
                 <div className="mb-4 flex justify-between items-start">
                     <div className="flex items-center gap-4">
-                        <h2 className="text-2xl font-bold text-white">{group.name}</h2>
-                        <p className="text-base font-medium text-[#d356f8]">{group.channel}</p>
+                        <h2 className="text-xl font-bold text-white">{group.name}</h2>
+                        <p className="text-sm font-medium text-[#d356f8]">{group.channel}</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <button 
@@ -400,32 +404,32 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
                 <table className="min-w-full divide-y divide-gray-700">
                     <thead className="bg-gray-950">
                     <tr>
-                        <th className="px-6 py-3 text-left text-sm font-medium text-gray-400 uppercase">Campaign</th>
-                        <th className="px-6 py-3 text-left text-sm font-medium text-gray-400 uppercase">Status</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase">Campaign</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase">Status</th>
                         {hasCustomKpis ? (
                             isEmailMarketing ? (
                                 availableKpis.reduce<React.ReactNode[]>((acc, kpi) => {
                                     if (channelKpiConfig[kpi.id]) {
-                                        acc.push(<th key={kpi.id} className="px-6 py-3 text-right text-sm font-medium text-gray-400 uppercase">{kpi.label}</th>);
+                                        acc.push(<th key={kpi.id} className="px-4 py-2 text-right text-xs font-medium text-gray-400 uppercase">{kpi.label}</th>);
                                         if (kpi.id === 'opens') {
-                                            acc.push(<th key="open-rate" className="px-6 py-3 text-right text-sm font-medium text-gray-400 uppercase">Open Rate</th>);
+                                            acc.push(<th key="open-rate" className="px-4 py-2 text-right text-xs font-medium text-gray-400 uppercase">Open Rate</th>);
                                         }
                                         if (kpi.id === 'clicks') {
-                                            acc.push(<th key="click-rate" className="px-6 py-3 text-right text-sm font-medium text-gray-400 uppercase">Click Rate</th>);
+                                            acc.push(<th key="click-rate" className="px-4 py-2 text-right text-xs font-medium text-gray-400 uppercase">Click Rate</th>);
                                         }
                                     }
                                     return acc;
                                 }, [])
                             ) : (
                                 availableKpis.map(kpi => 
-                                    channelKpiConfig[kpi.id] && <th key={kpi.id} className="px-6 py-3 text-right text-sm font-medium text-gray-400 uppercase">{kpi.label}</th>
+                                    channelKpiConfig[kpi.id] && <th key={kpi.id} className="px-4 py-2 text-right text-xs font-medium text-gray-400 uppercase">{kpi.label}</th>
                                 )
                             )
                         ) : (
                             <>
-                                <th className="px-6 py-3 text-left text-sm font-medium text-gray-400 uppercase">Date Range</th>
-                                <th className="px-6 py-3 text-right text-sm font-medium text-gray-400 uppercase">Leads</th>
-                                <th className="px-6 py-3 text-right text-sm font-medium text-gray-400 uppercase">Cost</th>
+                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase">Date Range</th>
+                                <th className="px-4 py-2 text-right text-xs font-medium text-gray-400 uppercase">Leads</th>
+                                <th className="px-4 py-2 text-right text-xs font-medium text-gray-400 uppercase">Cost</th>
                             </>
                         )}
                     </tr>
@@ -434,25 +438,25 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
                     {groupCampaigns.map((campaign) => {
                        return (
                         <tr key={campaign.id} className="hover:bg-gray-700">
-                            <td className="px-6 py-4 whitespace-nowrap text-base font-medium">
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
                                 <button onClick={() => handleEditClick(campaign)} className="text-[#e9a7fb] hover:text-[#d356f8] text-left transition duration-150 ease-in-out">
                                     {campaign.name}
                                 </button>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">{getStatusChip(campaign.status)}</td>
+                            <td className="px-4 py-3 whitespace-nowrap">{getStatusChip(campaign.status)}</td>
                             {hasCustomKpis ? (
                                 isEmailMarketing ? (
                                     availableKpis.reduce<React.ReactNode[]>((acc, kpi) => {
                                         if (channelKpiConfig[kpi.id]) {
                                             acc.push(
-                                                <td key={kpi.id} className="px-6 py-4 whitespace-nowrap text-right text-base text-gray-400">
+                                                <td key={kpi.id} className="px-4 py-3 whitespace-nowrap text-right text-sm text-gray-400">
                                                     {formatKpiValue(campaign[kpi.id] as number | undefined, kpi.id)}
                                                 </td>
                                             );
                                             if (kpi.id === 'opens') {
                                                 const openRate = (campaign.delivered ?? 0) > 0 ? ((campaign.opens ?? 0) / campaign.delivered!) * 100 : 0;
                                                 acc.push(
-                                                    <td key="open-rate" className="px-6 py-4 whitespace-nowrap text-right text-base text-gray-400 font-semibold">
+                                                    <td key="open-rate" className="px-4 py-3 whitespace-nowrap text-right text-sm text-gray-400 font-semibold">
                                                         {openRate.toFixed(1)}%
                                                     </td>
                                                 );
@@ -460,7 +464,7 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
                                             if (kpi.id === 'clicks') {
                                                 const clickRate = (campaign.delivered ?? 0) > 0 ? ((campaign.clicks ?? 0) / campaign.delivered!) * 100 : 0;
                                                 acc.push(
-                                                    <td key="click-rate" className="px-6 py-4 whitespace-nowrap text-right text-base text-gray-400 font-semibold">
+                                                    <td key="click-rate" className="px-4 py-3 whitespace-nowrap text-right text-sm text-gray-400 font-semibold">
                                                         {clickRate.toFixed(1)}%
                                                     </td>
                                                 );
@@ -471,16 +475,16 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
                                 ) : (
                                     availableKpis.map(kpi =>
                                         channelKpiConfig[kpi.id] && 
-                                        <td key={kpi.id} className="px-6 py-4 whitespace-nowrap text-right text-base text-gray-400">
-                                            {formatKpiValue(campaign[kpi.id] as number | undefined, kpi.id)}
+                                        <td key={kpi.id} className="px-4 py-3 whitespace-nowrap text-right text-sm text-gray-400">
+                                            {formatKpiValue(campaign[kpi.id as keyof Campaign] as number | undefined, kpi.id)}
                                         </td>
                                     )
                                 )
                             ) : (
                                 <>
-                                    <td className="px-6 py-4 whitespace-nowrap text-base text-gray-400">{campaign.endDate ? `${campaign.startDate} – ${campaign.endDate}` : campaign.startDate}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-base text-gray-400">{leadCountsByCampaignId[campaign.id] ?? 0}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-base text-gray-400">${campaign.cost.toLocaleString()}</td>
+                                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-400">{campaign.endDate ? `${campaign.startDate} – ${campaign.endDate}` : campaign.startDate}</td>
+                                    <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-gray-400">{leadCountsByCampaignId[campaign.id] ?? 0}</td>
+                                    <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-gray-400">${campaign.cost.toLocaleString()}</td>
                                 </>
                             )}
                         </tr>
@@ -488,14 +492,14 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
                     })}
                     {groupCampaigns.length === 0 && (
                         <tr>
-                            <td colSpan={10} className="text-center py-4 text-base text-gray-500">No campaigns in this group yet.</td>
+                            <td colSpan={10} className="text-center py-4 text-sm text-gray-500">No campaigns in this group yet.</td>
                         </tr>
                     )}
                     </tbody>
                     {groupCampaigns.length > 0 && totals && (
                         <tfoot className="bg-black/70">
                             <tr className="border-t-2 border-gray-600">
-                                <td colSpan={2} className="px-6 py-3 text-left text-base font-bold text-white uppercase tracking-wider">
+                                <td colSpan={2} className="px-4 py-2 text-left text-sm font-bold text-white uppercase tracking-wider">
                                     Total
                                 </td>
                                 {hasCustomKpis ? (
@@ -503,14 +507,14 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
                                         availableKpis.reduce<React.ReactNode[]>((acc, kpi) => {
                                             if (channelKpiConfig[kpi.id]) {
                                                 acc.push(
-                                                    <td key={`${kpi.id}-total`} className="px-6 py-3 whitespace-nowrap text-right text-base font-bold text-white">
+                                                    <td key={`${kpi.id}-total`} className="px-4 py-2 whitespace-nowrap text-right text-sm font-bold text-white">
                                                         {formatKpiValue(totals[kpi.id as keyof typeof totals], kpi.id)}
                                                     </td>
                                                 );
                                                 if (kpi.id === 'opens') {
                                                     const totalOpenRate = (totals.delivered ?? 0) > 0 ? ((totals.opens ?? 0) / totals.delivered!) * 100 : 0;
                                                     acc.push(
-                                                        <td key="open-rate-total" className="px-6 py-3 whitespace-nowrap text-right text-base font-bold text-white">
+                                                        <td key="open-rate-total" className="px-4 py-2 whitespace-nowrap text-right text-sm font-bold text-white">
                                                             {totalOpenRate.toFixed(1)}%
                                                         </td>
                                                     );
@@ -518,7 +522,7 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
                                                 if (kpi.id === 'clicks') {
                                                     const totalClickRate = (totals.delivered ?? 0) > 0 ? ((totals.clicks ?? 0) / totals.delivered!) * 100 : 0;
                                                     acc.push(
-                                                        <td key="click-rate-total" className="px-6 py-3 whitespace-nowrap text-right text-base font-bold text-white">
+                                                        <td key="click-rate-total" className="px-4 py-2 whitespace-nowrap text-right text-sm font-bold text-white">
                                                             {totalClickRate.toFixed(1)}%
                                                         </td>
                                                     );
@@ -531,10 +535,10 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
                                             if (channelKpiConfig[kpi.id]) {
                                                 const nonSummable = ['cpc', 'cpa', 'roas'];
                                                 if (nonSummable.includes(kpi.id)) {
-                                                    return <td key={`${kpi.id}-total`} className="px-6 py-3 text-right text-base text-gray-500">N/A</td>;
+                                                    return <td key={`${kpi.id}-total`} className="px-4 py-2 text-right text-sm text-gray-500">N/A</td>;
                                                 }
                                                 return (
-                                                    <td key={`${kpi.id}-total`} className="px-6 py-3 whitespace-nowrap text-right text-base font-bold text-white">
+                                                    <td key={`${kpi.id}-total`} className="px-4 py-2 whitespace-nowrap text-right text-sm font-bold text-white">
                                                         {formatKpiValue(totals[kpi.id as keyof typeof totals], kpi.id)}
                                                     </td>
                                                 );
@@ -544,9 +548,9 @@ const CampaignsView: React.FC<CampaignsViewProps> = ({
                                     )
                                 ) : (
                                     <>
-                                        <td className="px-6 py-3"></td>
-                                        <td className="px-6 py-3 whitespace-nowrap text-right text-base font-bold text-white">{totals.leads.toLocaleString()}</td>
-                                        <td className="px-6 py-3 whitespace-nowrap text-right text-base font-bold text-white">${totals.cost?.toLocaleString()}</td>
+                                        <td className="px-4 py-2"></td>
+                                        <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-bold text-white">{totals.leads.toLocaleString()}</td>
+                                        <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-bold text-white">${totals.cost?.toLocaleString()}</td>
                                     </>
                                 )}
                             </tr>
