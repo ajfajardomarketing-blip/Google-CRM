@@ -1,5 +1,4 @@
-// FIX: Corrected React import syntax.
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { FixedExpense, VariableExpense, Campaign, CampaignGroup, GoalSettings } from '../types';
 import { TrashIcon, EditIcon, CheckIcon, CloseIcon } from './icons';
 
@@ -13,15 +12,19 @@ interface GoalsExpensesProps {
 
 const formatCurrency = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
 
+const generateId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+};
+
 const GoalsExpenses: React.FC<GoalsExpensesProps> = ({ expenses, onExpensesChange, campaigns, campaignGroups, dateRange }) => {
     // Destructure with default values to prevent runtime errors if properties are missing from the Firestore object.
     const { salaries = [], tools = [], variable = [] } = expenses || {};
     
-    const [newSalary, setNewSalary] = React.useState({ name: '', monthlyAmount: '' });
-    const [newTool, setNewTool] = React.useState({ name: '', monthlyAmount: '' });
-    const [newVariable, setNewVariable] = React.useState({ name: '', amount: '', date: new Date().toISOString().split('T')[0] });
+    const [newSalary, setNewSalary] = useState({ name: '', monthlyAmount: '' });
+    const [newTool, setNewTool] = useState({ name: '', monthlyAmount: '' });
+    const [newVariable, setNewVariable] = useState({ name: '', amount: '', date: new Date().toISOString().split('T')[0] });
 
-    const [editingExpense, setEditingExpense] = React.useState<{ type: 'salary' | 'tool' | 'variable'; expense: FixedExpense | VariableExpense | { monthlyAmount?: string | number, amount?: string | number } } | null>(null);
+    const [editingExpense, setEditingExpense] = useState<{ type: 'salary' | 'tool' | 'variable'; expense: FixedExpense | VariableExpense | { monthlyAmount?: string | number, amount?: string | number } } | null>(null);
 
     const handleEditClick = (type: 'salary' | 'tool' | 'variable', expense: FixedExpense | VariableExpense) => {
         setEditingExpense({ type, expense: { ...expense } });
@@ -80,7 +83,7 @@ const GoalsExpenses: React.FC<GoalsExpensesProps> = ({ expenses, onExpensesChang
     const handleAddSalary = () => {
         if (!newSalary.name || !newSalary.monthlyAmount) return;
         const newExpense: FixedExpense = {
-            id: crypto.randomUUID(),
+            id: generateId(),
             name: newSalary.name,
             monthlyAmount: parseFloat(newSalary.monthlyAmount)
         };
@@ -103,7 +106,7 @@ const GoalsExpenses: React.FC<GoalsExpensesProps> = ({ expenses, onExpensesChang
     const handleAddTool = () => {
         if (!newTool.name || !newTool.monthlyAmount) return;
         const newExpense: FixedExpense = {
-            id: crypto.randomUUID(),
+            id: generateId(),
             name: newTool.name,
             monthlyAmount: parseFloat(newTool.monthlyAmount)
         };
@@ -126,7 +129,7 @@ const GoalsExpenses: React.FC<GoalsExpensesProps> = ({ expenses, onExpensesChang
     const handleAddVariableExpense = () => {
         if (!newVariable.name || !newVariable.amount || !newVariable.date) return;
         const newExpense: VariableExpense = {
-            id: crypto.randomUUID(),
+            id: generateId(),
             name: newVariable.name,
             amount: parseFloat(newVariable.amount),
             date: newVariable.date
@@ -147,8 +150,7 @@ const GoalsExpenses: React.FC<GoalsExpensesProps> = ({ expenses, onExpensesChang
         });
     };
 
-    // FIX: Replaced incorrect 'aistudio.useMemo' with 'React.useMemo'.
-    const period = React.useMemo(() => {
+    const period = useMemo(() => {
         const now = new Date();
         let currentStart: Date, currentEnd: Date;
 
@@ -180,7 +182,7 @@ const GoalsExpenses: React.FC<GoalsExpensesProps> = ({ expenses, onExpensesChang
         return { start: currentStart, end: currentEnd };
     }, [dateRange]);
 
-    const periodBreakdown = React.useMemo(() => {
+    const periodBreakdown = useMemo(() => {
         const paidChannels = ['Meta Ads', 'Google Ads', 'LinkedIn Ads'];
         const paidGroupIds = campaignGroups.filter(g => paidChannels.includes(g.channel)).map(g => g.id);
 
@@ -222,7 +224,7 @@ const GoalsExpenses: React.FC<GoalsExpensesProps> = ({ expenses, onExpensesChang
         };
     }, [salaries, tools, variable, campaigns, campaignGroups, period]);
     
-    const annualBreakdown = React.useMemo(() => {
+    const annualBreakdown = useMemo(() => {
         const paidChannels = ['Meta Ads', 'Google Ads', 'LinkedIn Ads'];
         const paidGroupIds = campaignGroups.filter(g => paidChannels.includes(g.channel)).map(g => g.id);
         const currentYear = new Date().getFullYear();
@@ -272,9 +274,9 @@ const GoalsExpenses: React.FC<GoalsExpensesProps> = ({ expenses, onExpensesChang
         return '...';
     };
     
-    const totalSalaries = React.useMemo(() => salaries.reduce((sum, s) => sum + s.monthlyAmount, 0), [salaries]);
-    const totalTools = React.useMemo(() => tools.reduce((sum, t) => sum + t.monthlyAmount, 0), [tools]);
-    const totalVariable = React.useMemo(() => {
+    const totalSalaries = useMemo(() => salaries.reduce((sum, s) => sum + s.monthlyAmount, 0), [salaries]);
+    const totalTools = useMemo(() => tools.reduce((sum, t) => sum + t.monthlyAmount, 0), [tools]);
+    const totalVariable = useMemo(() => {
         const manualVariableTotal = variable
             .filter(exp => !exp.isAutoGenerated)
             .reduce((sum, exp) => sum + exp.amount, 0);

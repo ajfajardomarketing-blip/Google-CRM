@@ -114,6 +114,26 @@ const HistoricalTrendsChart: React.FC<HistoricalTrendsChartProps> = ({ data }) =
   };
 
   const dataToShowInTooltip = data.filter(series => visibleSeries[series.name]);
+  
+  const tooltipTransformClass = useMemo(() => {
+      if (!hoveredIndex || !containerRef.current) return '-translate-x-1/2';
+
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = tooltipPosition.x;
+      const tooltipWidth = 150; // Corresponds to min-w-[150px]
+
+      // If the centered tooltip would overflow right, anchor it to the right of the cursor
+      if (x + tooltipWidth / 2 > rect.width) {
+          return '-translate-x-full -ml-2'; // Add a small margin for spacing
+      }
+      // If the centered tooltip would overflow left, anchor it to the left of the cursor
+      if (x - tooltipWidth / 2 < 0) {
+          return 'translate-x-0 ml-2'; // Add a small margin
+      }
+      // Default is to center it
+      return '-translate-x-1/2';
+  }, [hoveredIndex, tooltipPosition]);
+
 
   return (
     <div className="bg-gray-900 p-4 rounded-xl shadow-lg h-full flex flex-col">
@@ -129,7 +149,7 @@ const HistoricalTrendsChart: React.FC<HistoricalTrendsChartProps> = ({ data }) =
             {/* Tooltip */}
             {hoveredIndex !== null && tooltipPosition && dataToShowInTooltip.length > 0 && (
               <div 
-                className="absolute z-10 p-2 bg-black shadow-lg rounded-md pointer-events-none transform -translate-x-1/2 -translate-y-full"
+                className={`absolute z-10 p-2 bg-black shadow-lg rounded-md pointer-events-none transform -translate-y-full ${tooltipTransformClass}`}
                 style={{ left: tooltipPosition.x, top: tooltipPosition.y - 10, minWidth: '150px' }}
               >
                   <p className="font-bold text-white mb-2 text-sm">{labels[hoveredIndex]}</p>

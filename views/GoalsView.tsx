@@ -1,10 +1,4 @@
 
-
-
-
-
-
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { GoalSettings, Lead, LeadStage, CalculatorInputs, Campaign, CampaignGroup } from '../types';
 import { metricsData } from '../data/mockData';

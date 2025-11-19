@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { Lead, Campaign, CampaignGroup, GoalSettings, PlatformMetrics } from '../types';
@@ -110,9 +111,7 @@ const GenerateReportModal: React.FC<GenerateReportModalProps> = ({ isOpen, onClo
     setReport('');
 
     try {
-      // FIX: Replaced process.env.API_KEY with a placeholder to prevent app from crashing.
-      // A valid API key must be provided for this feature to work.
-      const ai = new GoogleGenAI({ apiKey: 'AIzaSy...PLACEHOLDER' });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = generatePrompt();
 
       const response = await ai.models.generateContent({
@@ -124,7 +123,7 @@ const GenerateReportModal: React.FC<GenerateReportModalProps> = ({ isOpen, onClo
 
     } catch (e) {
       console.error(e);
-      setError('An error occurred while generating the report. Please try again.');
+      setError('An error occurred while generating the report. Please check if your API key is valid and try again.');
     } finally {
       setIsLoading(false);
     }

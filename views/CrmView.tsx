@@ -1,5 +1,4 @@
 
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { Lead, LeadStage, CampaignGroup, Campaign } from '../types';
 import AddLeadModal from '../components/AddLeadModal';

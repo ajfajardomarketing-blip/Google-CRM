@@ -1,5 +1,4 @@
 
-
 import React from 'react';
 import { GoalSettings, PlatformMetrics, Campaign, CampaignGroup } from '../types';
 import MarketingEffortsTable from '../components/MarketingEffortsTable';

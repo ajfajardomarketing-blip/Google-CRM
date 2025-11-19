@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import GenerateReportModal from '../components/GenerateReportModal';
 import { Lead, Campaign, CampaignGroup, GoalSettings, PlatformMetrics } from '../types';
